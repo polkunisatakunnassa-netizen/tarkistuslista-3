@@ -1,0 +1,227 @@
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+.svm-wrap { font-family: 'DM Sans', sans-serif; max-width: 820px; margin: 0 auto; color: #1e293b; }
+.svm-wrap *, .svm-wrap *::before, .svm-wrap *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.svm-header { background: #1a6b6b; border-radius: 16px; padding: 2.2rem 2rem; margin-bottom: 1.8rem; text-align: center; }
+.svm-header h2 { font-family: 'Fraunces', serif; color: #fff; font-size: 1.7rem; margin-bottom: 0.6rem; }
+.svm-header p { color: rgba(255,255,255,0.82); font-size: 0.92rem; font-weight: 300; }
+.svm-note { background: #fef3c7; border-left: 4px solid #d97706; border-radius: 0 10px 10px 0; padding: 0.8rem 1.1rem; margin-bottom: 1.4rem; font-size: 0.88rem; color: #92400e; }
+.svm-prog-wrap { background: #e2e8f0; border-radius: 100px; height: 7px; margin-bottom: 0.4rem; }
+.svm-prog-bar { height: 7px; background: linear-gradient(90deg, #1a6b6b, #2a9090); border-radius: 100px; transition: width 0.4s; width: 0%; }
+.svm-prog-label { font-size: 0.8rem; color: #94a3b8; text-align: right; margin-bottom: 1.4rem; }
+.svm-prog-label b { color: #1a6b6b; }
+.svm-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; margin-bottom: 1.1rem; overflow: hidden; transition: box-shadow 0.2s; }
+.svm-card:hover { box-shadow: 0 6px 24px rgba(26,107,107,0.09); }
+.svm-card-head { display: flex; align-items: center; gap: 0.9rem; padding: 1.1rem 1.3rem; background: #e8f4f4; border-bottom: 1px solid #d0e8e8; cursor: pointer; user-select: none; }
+.svm-num { width: 32px; height: 32px; background: #1a6b6b; color: #fff; font-family: 'Fraunces', serif; font-size: 1rem; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.svm-title { font-family: 'Fraunces', serif; font-size: 1rem; color: #1a6b6b; flex: 1; }
+.svm-arrow { color: #2a9090; transition: transform 0.3s; font-size: 1rem; }
+.svm-card.open .svm-arrow { transform: rotate(180deg); }
+.svm-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+.svm-card.open .svm-body { max-height: 800px; }
+.svm-inner { padding: 1.2rem 1.3rem 1.3rem; }
+.svm-principle { background: #e8f4f4; border: 1px solid #c5e0e0; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem; font-size: 0.87rem; color: #1a6b6b; font-weight: 500; }
+.svm-principle::before { content: '👉 '; }
+.svm-list { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; }
+.svm-item { display: flex; align-items: flex-start; gap: 0.7rem; font-size: 0.89rem; color: #475569; padding: 0.5rem 0.7rem; border-radius: 7px; cursor: pointer; transition: background 0.15s; }
+.svm-item:hover { background: #e8f4f4; }
+.svm-item.done { color: #94a3b8; text-decoration: line-through; text-decoration-color: #2a9090; }
+.svm-item.done .svm-cb { background: #059669; border-color: #059669; }
+.svm-item.done .svm-cb::after { opacity: 1; transform: rotate(45deg) scale(1); }
+.svm-cb { width: 19px; height: 19px; border: 2px solid #cbd5e1; border-radius: 5px; flex-shrink: 0; margin-top: 1px; background: #fff; position: relative; transition: all 0.2s; }
+.svm-cb::after { content: ''; position: absolute; top: 2px; left: 5px; width: 5px; height: 8px; border: 2px solid #fff; border-top: none; border-left: none; transform: rotate(45deg) scale(0.5); opacity: 0; transition: all 0.15s; }
+.svm-when { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin: 0.9rem 0; }
+.svm-box { border-radius: 9px; padding: 0.8rem 0.9rem; font-size: 0.84rem; }
+.svm-box.do { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+.svm-box.soft { background: #fff7ed; border: 1px solid #fcd34d; color: #92400e; }
+.svm-box strong { display: block; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; }
+.svm-box ul { padding-left: 1rem; }
+.svm-box li { margin-bottom: 0.2rem; }
+.svm-summary { background: #1e293b; color: #fff; border-radius: 14px; padding: 1.8rem 1.8rem; margin-top: 1.8rem; text-align: center; }
+.svm-summary h3 { font-family: 'Fraunces', serif; font-size: 1.25rem; color: #e2e8f0; margin-bottom: 0.8rem; }
+.svm-summary p { color: #94a3b8; font-size: 0.88rem; margin-bottom: 1rem; }
+.svm-transforms { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+.svm-t { background: rgba(255,255,255,0.07); border-radius: 8px; padding: 0.55rem 0.9rem; font-size: 0.82rem; color: #e2e8f0; }
+.svm-t span { color: #2a9090; margin: 0 0.3rem; }
+.svm-footer { text-align: center; font-size: 0.75rem; color: #94a3b8; margin-top: 1.2rem; }
+.svm-logo { text-align: center; margin-top: 1rem; }
+.svm-logo { text-align: center; margin-top: 1rem; }
+.svm-logo img { max-width: 320px; width: 100%; }
+@media(max-width:580px) { .svm-when { grid-template-columns: 1fr; } .svm-header { padding: 1.5rem 1.2rem; } }
+</style>
+
+<div class="svm-wrap">
+
+  <div class="svm-header">
+    <h2>Saavutettavan viestinnän tarkistuslista</h2>
+    <p>Saavutettava viestintä on tietoinen valinta – se purkaa esteitä ja kutsuu jokaisen mukaan omana itsenään.</p>
+  </div>
+
+  <div class="svm-note"><strong>Miten käyttää:</strong> Käy kohdat läpi ennen julkaisua tai toimintaa. Klikkaa kohtaa merkitäksesi sen tehdyksi.</div>
+
+  <div class="svm-prog-wrap"><div class="svm-prog-bar" id="svmBar"></div></div>
+  <div class="svm-prog-label">Tehty: <b id="svmTxt">0 / 0</b></div>
+
+  <!-- 1 -->
+  <div class="svm-card open">
+    <div class="svm-card-head" onclick="svmToggle(this)">
+      <div class="svm-num">1</div>
+      <div class="svm-title">Saavutettavuus on strateginen valinta</div>
+      <div class="svm-arrow">▾</div>
+    </div>
+    <div class="svm-body"><div class="svm-inner">
+      <div class="svm-principle">Asiantuntijuus ja persoona saavat näkyä, vaikka kieli ei olisi täydellistä.</div>
+      <ul class="svm-list">
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Olemme miettineet, kenelle viestimme ja mitä esteitä heillä voi olla osallistua</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Emme oleta, että korkea koulutus = vahva suomen kielen taito</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Viestintämme ei vaadi täydellistä suomea osallistuakseen</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Olemme sopineet yhteisesti saavutettavuuden periaatteista järjestössämme</span></li>
+      </ul>
+    </div></div>
+  </div>
+
+  <!-- 2 -->
+  <div class="svm-card">
+    <div class="svm-card-head" onclick="svmToggle(this)">
+      <div class="svm-num">2</div>
+      <div class="svm-title">Kielellinen saavutettavuus: ymmärtäminen ensin</div>
+      <div class="svm-arrow">▾</div>
+    </div>
+    <div class="svm-body"><div class="svm-inner">
+      <div class="svm-principle">Hyvä nyrkkisääntö: jos asia ymmärretään, kieli toimii.</div>
+      <ul class="svm-list">
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Priorisoimme viestin perillepääsyn – ei kielioppisääntöjä</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Rakenne on johdonmukainen ja ennakoitava (otsikko → asia → toimintakutsu)</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Käytämme rauhallista rytmiä: lyhyitä lauseita, ei pitkiä ketjuja</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Suosimme puheenomaista kieltä virkakielen sijaan</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Toistamme tärkeät asiat eri muodoissa (teksti + kuva + suullinen)</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Vältämme ammattislangia tai selitämme sen heti</span></li>
+      </ul>
+    </div></div>
+  </div>
+
+  <!-- 3 -->
+  <div class="svm-card">
+    <div class="svm-card-head" onclick="svmToggle(this)">
+      <div class="svm-num">3</div>
+      <div class="svm-title">Virheet ovat sallittuja – myös meillä</div>
+      <div class="svm-arrow">▾</div>
+    </div>
+    <div class="svm-body"><div class="svm-inner">
+      <div class="svm-principle">Kun virheet ovat sallittuja, kieltä uskalletaan käyttää.</div>
+      <ul class="svm-list">
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Emme korjaa toisten kielivirheitä julkisesti tai kesken puheen</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Omassa viestinnässämme sallimme epätäydellisyyden</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Rohkaisemme aktiivisesti: "Hienoa, että osallistuit!"</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Vältämme ilmaisuja, jotka voivat lisätä häpeää kielenkäytöstä</span></li>
+      </ul>
+    </div></div>
+  </div>
+
+  <!-- 4 -->
+  <div class="svm-card">
+    <div class="svm-card-head" onclick="svmToggle(this)">
+      <div class="svm-num">4</div>
+      <div class="svm-title">Englanti on turvaverkko – ei oletusarvo</div>
+      <div class="svm-arrow">▾</div>
+    </div>
+    <div class="svm-body"><div class="svm-inner">
+      <div class="svm-principle">Viivästytä automaattista kielen vaihtoa – anna tilaa yrittää.</div>
+      <div class="svm-when">
+        <div class="svm-box do"><strong>✓ Käytä englantia, kun</strong><ul><li>Asia koskee turvallisuutta tai oikeuksia</li><li>Väärinymmärrys olisi vakava</li></ul></div>
+        <div class="svm-box soft"><strong>→ Rohkaise suomeen, kun</strong><ul><li>Rakennetaan yhteisöä</li><li>Harjoitellaan vuorovaikutusta</li><li>Ihminen haluaa kokeilla</li></ul></div>
+      </div>
+      <ul class="svm-list">
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Emme vaihda automaattisesti englantiin heti, kun suomi takkuaa</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Kriittisissä turvallisuusasioissa tarjoamme englanninkielisen version</span></li>
+      </ul>
+    </div></div>
+  </div>
+
+  <!-- 5 -->
+  <div class="svm-card">
+    <div class="svm-card-head" onclick="svmToggle(this)">
+      <div class="svm-num">5</div>
+      <div class="svm-title">Visuaalisuus tukee ymmärtämistä</div>
+      <div class="svm-arrow">▾</div>
+    </div>
+    <div class="svm-body"><div class="svm-inner">
+      <div class="svm-principle">Ulkoasu ei ole koriste – se ohjaa lukemista ja ymmärtämistä.</div>
+      <ul class="svm-list">
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Käytämme selkeitä otsikoita ja visuaalisia listoja</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Rakenne on ennakoitava: lukija tietää, mitä odottaa</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Kontrasti on riittävä – teksti erottuu taustasta selkeästi</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Fonttikoko on luettava myös mobiililla (min. 16px leipäteksti)</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Videoissa on tekstitys tai tekstitiedosto saatavilla</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Kuvissa on alt-tekstit ruudunlukijoita varten</span></li>
+      </ul>
+    </div></div>
+  </div>
+
+  <!-- 6 -->
+  <div class="svm-card">
+    <div class="svm-card-head" onclick="svmToggle(this)">
+      <div class="svm-num">6</div>
+      <div class="svm-title">Sosiaalinen saavutettavuus: minimoi häpeä</div>
+      <div class="svm-arrow">▾</div>
+    </div>
+    <div class="svm-body"><div class="svm-inner">
+      <div class="svm-principle">"Arvostamme osaamistasi, emme kielioppiasi."</div>
+      <ul class="svm-list">
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Teemme väärinymmärryksistä normaaleja – normalisoimme niitä ääneen</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Korostamme osaamista ja panosta, ei kielivirheitä</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Tarjoamme mahdollisuuden kielikaveruuteen tai vertaistukeen</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Hyödynnämme huumoria ja rennon matalan kynnyksen toimintaa</span></li>
+      </ul>
+    </div></div>
+  </div>
+
+  <!-- 7 -->
+  <div class="svm-card">
+    <div class="svm-card-head" onclick="svmToggle(this)">
+      <div class="svm-num">7</div>
+      <div class="svm-title">Digitaaliset kanavat tukevat osallisuutta</div>
+      <div class="svm-arrow">▾</div>
+    </div>
+    <div class="svm-body"><div class="svm-inner">
+      <div class="svm-principle">Digitaalisuus voi olla turvallinen harjoittelutila.</div>
+      <ul class="svm-list">
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Tieto on aina samassa, ennustettavassa paikassa</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Hyödynnämme asynkronisia kanavia (esim. WhatsApp, sähköposti)</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Annamme aikaa lukea, kääntää ja muotoilla vastaus</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Lomakkeissa on esimerkit ja selkeät ohjeet jokaiselle kentälle</span></li>
+        <li class="svm-item" onclick="svmCheck(this)"><div class="svm-cb"></div><span>Sivustollamme on saavutettavuusseloste</span></li>
+      </ul>
+    </div></div>
+  </div>
+
+  <div class="svm-summary">
+    <h3>Miksi tämä kaikki kannattaa?</h3>
+    <p>Saavutettava viestintä ei ole pelkkää selkeyttämistä. Se on identiteettityötä: kutsu osallistua, kuulua ja tulla nähdyksi omana itsenään.</p>
+    <div class="svm-transforms">
+      <div class="svm-t">Ulkopuolisuus <span>→</span> Jäsenyys</div>
+      <div class="svm-t">Asiointi <span>→</span> Yhteisöllisyys</div>
+      <div class="svm-t">Ymmärtäminen <span>→</span> Osallisuus</div>
+    </div>
+  </div>
+
+  <div class="svm-footer">Lähde: Polkuni Satakunnassa on Euroopan unionin osarahoittama hanke, jonka päätoteuttaja on Diak ja osatoteuttajana Sataedu.</div>
+  <div class="svm-logo"><img src="data:image/png;base64,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" alt="Rahoittajien logot: EU, SATAEDU, DIAK" style="max-width:320px;width:100%;margin-top:0.8rem;"></div>
+
+</div>
+
+<script>
+function svmToggle(h) { h.closest('.svm-card').classList.toggle('open'); }
+function svmCheck(el) { el.classList.toggle('done'); svmProgress(); }
+function svmProgress() {
+  var all = document.querySelectorAll('.svm-wrap .svm-item').length;
+  var done = document.querySelectorAll('.svm-wrap .svm-item.done').length;
+  var pct = all ? (done/all*100) : 0;
+  var bar = document.getElementById('svmBar');
+  var txt = document.getElementById('svmTxt');
+  if(bar) bar.style.width = pct + '%';
+  if(txt) txt.innerHTML = done + ' / ' + all;
+}
+svmProgress();
+</script>
